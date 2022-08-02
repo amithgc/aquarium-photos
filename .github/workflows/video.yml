@@ -18,6 +18,8 @@ jobs:
         run: ffmpeg -y -framerate 10 -pattern_type glob -i "images/*.jpg" -c:v libx264 -crf 0 ./videos/video.mp4
       - name: Generate Gif
         run: ffmpeg -y -i ./videos/video.mp4 -vf scale=800:-1 -r 10 ./gif/animation.gif
+      - name: Generate HD Gif
+        run: ffmpeg -y -i ./videos/video.mp4 -vf scale=2304:-1 -r 10 ./gif/animation-HD.gif
       - name: Check to see if a new video file has been created
         id: changes
         run: |
