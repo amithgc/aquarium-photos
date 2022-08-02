@@ -7,18 +7,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  generate-video:
     runs-on: ubuntu-latest
-    env:
-      BEFORE_PROCESSING_FILE: shortcut-to-github1s.mov
-      AFTER_PROCESSING_FILE: shortcut-to-github1s.gif
     steps:
       - uses: actions/checkout@v2
       - name: Setup ffmpeg
         uses: FedericoCarboni/setup-ffmpeg@v1-beta
         id: setup-ffmpeg
-      - name: Execute ffmpeg
-        run: ffmpeg -y -i origin/${{ env.BEFORE_PROCESSING_FILE }} -vf scale=800:-1 -r 10 processed/${{ env.AFTER_PROCESSING_FILE }}
+      - name: Generate Video
+        run: ffmpeg -framerate 10 -pattern_type glob -i "images/*.jpg" -c:v libx264 -crf 0 video.mp4
       - name: Check to see if a new video file has been created
         id: changes
         run: |
@@ -28,8 +25,8 @@ jobs:
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add ./processed/*
-          git commit -m "Add changes" -a
+          git add ./*
+          git commit -m "Video Generated, Automated" -a
         if: steps.changes.outputs.count > 0
       - name: Push changes
         uses: ad-m/github-push-action@master
