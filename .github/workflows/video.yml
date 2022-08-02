@@ -16,6 +16,8 @@ jobs:
         id: setup-ffmpeg
       - name: Generate Video
         run: ffmpeg -framerate 10 -pattern_type glob -i "images/*.jpg" -c:v libx264 -crf 0 ./videos/video.mp4
+      - name: Generate Gif
+        run: ffmpeg -y -i ./videos/video.mp4 -vf scale=800:-1 -r 10 ./gif/animation.gif
       - name: Check to see if a new video file has been created
         id: changes
         run: |
@@ -26,6 +28,7 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add ./videos/*
+          git add ./gif/*
           git commit -m "Video Generated, Automated" -a
         if: steps.changes.outputs.count > 0
       - name: Push changes
