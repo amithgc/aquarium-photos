@@ -29,8 +29,9 @@ jobs:
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add ./videos/*
-          git add ./gif/*
+          # git add ./videos/*
+          # git add ./gif/*
+          git add ./gif/animation.gif
           git commit -m "Video Generated, Automated" -a
         if: steps.changes.outputs.count > 0
       - name: Push changes
